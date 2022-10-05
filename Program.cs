@@ -6,5 +6,9 @@ using System;
 //Console.WriteLine("Hello, World!");
 //Kartenmischer.Mischer();
 //Kartenmischer.GeschuchteZahl();
-Kartensucher.Suchen();
+while (true)
+{
+    Kartensucher.Suchen();
+
+}
 

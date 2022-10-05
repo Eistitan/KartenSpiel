@@ -8,57 +8,52 @@ namespace KartenSpiel
 {
     internal class Kartensucher
     {
-        //Zugriff auf die Liste Karten und die gesuchte Zahl
         public static void Suchen()
         {
             List<int> zahlen = Kartenmischer.Mischer(); //Liste zahlen wird mit der Methode Mischer erstellt.
             int GesZahl = Kartenmischer.GeschuchteZahl(zahlen); //Parameter zahlen wird an die Methode GesuchteZahl() weitergegeben.
             //Console.WriteLine("AAA Die Gesuchte Zahl sei " + GesZahl);
 
-            int Listenlaenge= zahlen.Count();
-            Console.WriteLine("AAADie Länge der Liste sei "+ Listenlaenge);
-            
-            //einDrittel = Listenlaenge / 3;
-            int ZahlWert;
+            int Listenlaenge = zahlen.Count();
+            int MinZahlWert;
+            int MaxZahlWert;
+            int MidZahlWert;
             bool rotator = true;
-            
-            //Console.WriteLine("Ein Drittel sei " + IndexeinDrittel);
-            int IndexeinDrittel;
-            int Laenge = Listenlaenge;
-            int NeueLaenge;
-            IndexeinDrittel = Laenge / 3;      //Position bei 1/3
+
+            int min=0;  //Minimaler IndexWert
+            int max = (Listenlaenge-1); //Maximaler IndexWert
+            int mid; //Mitte zw min und max
             int I = 1;
 
 
-            while (rotator==true)
-            {                
-                ZahlWert = zahlen[IndexeinDrittel];       //Kartenwert
-                if (ZahlWert==GesZahl)
+            while (rotator == true)
+            {
+                mid = (min + max) / 2;
+                MinZahlWert = zahlen[min];     //Kartenwert bei Min
+                MaxZahlWert = zahlen[max];     //Kartenwert bei Max
+                MidZahlWert = zahlen[mid];     //Kartenwert bei Mid
+                if (MinZahlWert == GesZahl ||MaxZahlWert == GesZahl || MidZahlWert == GesZahl)
                 {
-                    Console.WriteLine("Die Gesuchte Zahl war "+ ZahlWert);
-                    Console.WriteLine("Der Index war 1+ "+ IndexeinDrittel);
-                    Console.WriteLine("Anzahl der Schritte  "+ I);
+                    I++;
+                    Vergleiche.Match(GesZahl,MinZahlWert,MaxZahlWert,MidZahlWert, I, mid, max, min); //Position fehlt, die Liste muss weitergegeben werden
                     rotator = false;
                 }
-                else if(ZahlWert<GesZahl)   
+                else if (MidZahlWert < GesZahl)
                 {
-                    NeueLaenge = Laenge - IndexeinDrittel;
-                    Console.WriteLine("Neue Listenlänge ist "+NeueLaenge);
-                    Console.WriteLine("");
-                    IndexeinDrittel =(IndexeinDrittel + NeueLaenge / 3);
                     I++;
+                    min = (1 + mid);
+                    max = (max - 1);
                     rotator = true;
                 }
                 else //derWert>GesZahl
-                {   NeueLaenge = IndexeinDrittel;
-                    Console.WriteLine("Neue Listenlänge ist " + NeueLaenge);
-                    Console.WriteLine("");
-                    IndexeinDrittel= ( NeueLaenge / 3);
-
+                {
                     I++;
+                    min = (1 + min);
+                    max = (mid - 1);
                     rotator = true;
                 };
             }
         }
+       
     }
 }
